@@ -1,17 +1,16 @@
+import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import SuggestionCard from '../components/SuggestionCard';
+import ColorCompatibilityChecker from '../components/ColorCompatibilityChecker';
+import PairRedirectCard from '../components/PairRedirectCard';
 
 export default function ResultPage() {
+  const navigate = useNavigate();
   const userImage = localStorage.getItem('userImage');
   const outfitImage = '/outfit-overlay.png'; // Replace with generated image later
   const productLink = localStorage.getItem('productLink');
 
   const suggestions = [
-    {
-      title: 'Color Match',
-      icon: '🎨',
-      text: 'Try wearing deep blue. It enhances your skin tone beautifully.',
-    },
     {
       title: 'Pair With',
       icon: '👖',
@@ -60,17 +59,33 @@ export default function ResultPage() {
               </a>
             </div>
           )}
+          <ColorCompatibilityChecker productColor="Terracotta" userTone="Cool" />
         </div>
 
-        {/* Suggestions */}
+        {/* Suggestions Section */}
         <div className="flex flex-col justify-center gap-6">
           <h2 className="text-2xl font-bold text-pink-700 text-center">Stylist Suggestions 💡</h2>
-          {suggestions.map((sug, idx) => (
-            <SuggestionCard key={idx} icon={sug.icon} title={sug.title} text={sug.text} />
-          ))}
+
+          {/* Clickable Color Match Card */}
+          <div
+            onClick={() => navigate('/color-match')}
+            className="cursor-pointer bg-pink-100 hover:bg-pink-200 transition-all rounded-xl p-4 shadow-md border border-pink-300"
+          >
+            <h3 className="text-xl font-bold text-pink-700 mb-2">🎨 Color Match</h3>
+            <p className="text-gray-700">Click to get personalized color suggestions based on your Undertone.</p>
+          </div>
+
+          {/* Gender Toggle for Pair With */}
+          <PairRedirectCard />
+
+          {/* Additional Suggestion Card */}
+          <SuggestionCard
+            icon="✨"
+            title="Occasion Tip"
+            text="Perfect for brunches, casual Fridays, or even a gallery visit."
+          />
         </div>
       </div>
-
       <Footer />
     </div>
   );
