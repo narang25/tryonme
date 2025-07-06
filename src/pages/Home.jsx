@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UploadArea from '../components/UploadArea';
 import GenerateButton from '../components/GenerateButton';
 import HeroHeader from '../components/HeroHeader';
@@ -8,13 +9,14 @@ export default function Home() {
   const [photo, setPhoto] = useState(null);
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef();
+  const navigate = useNavigate();
 
   const handleGenerate = () => {
     if (!photo) return;
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      alert('✨ Outfit transformation will happen here!');
+      navigate('/result'); // Navigates to the Result Page
     }, 1500);
   };
 
@@ -39,8 +41,20 @@ export default function Home() {
             </div>
           )}
 
+          {/* Try It On Button */}
           <GenerateButton photo={photo} loading={loading} onClick={handleGenerate} />
+
+          {/* New Button to Navigate to Product Link Page */}
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => navigate('/product')}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-full shadow transition"
+            >
+              Enter Product Link 🔗
+            </button>
+          </div>
         </div>
+
         <Footer />
       </main>
 
@@ -56,8 +70,6 @@ export default function Home() {
           Your AI stylist — try new outfits with just one photo 🎨
         </p>
       </aside>
-      
     </div>
-    
   );
 }
