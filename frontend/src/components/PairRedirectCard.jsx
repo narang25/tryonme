@@ -3,16 +3,26 @@ import { useNavigate } from 'react-router-dom';
 export default function PairRedirectCard() {
   const navigate = useNavigate();
 
-  const handleRedirect = (gender) => {
-    if (gender === 'male') navigate('/pair-with-male');
-    else navigate('/pair-with');
-  };
+ const handleRedirect = (gender) => {
+  const detectedTopStyle = 'Black Shirt over White Tee'; // Replace with your real detection result
+
+  if (gender === 'male') {
+    navigate('/pair-with-male', {
+      state: { topStyle: detectedTopStyle },
+    });
+  } else {
+    navigate('/pair-with', {
+      state: { topStyle: detectedTopStyle },
+    });
+  }
+};
+
 
   return (
     <div className="bg-pink-100 border border-pink-300 p-6 rounded-2xl shadow-md text-center">
       <h3 className="text-xl font-bold text-pink-700 mb-4">👖 Choose Your Outfit Type</h3>
       <p className="text-gray-700 mb-6">
-        Select the gender preference to get denim pairing suggestions based on your uploaded top.
+        Select the gender preference to get denim pairing suggestions based on your uploaded outfit.
       </p>
       <div className="flex justify-center gap-6">
         <button

@@ -1,12 +1,17 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
+import MyImage from '../assets/my-image.jpg';
 import SuggestionCard from '../components/SuggestionCard';
 import ColorCompatibilityChecker from '../components/ColorCompatibilityChecker';
 import PairRedirectCard from '../components/PairRedirectCard';
-import { ArrowLeft } from 'lucide-react'; // Add this for the icon
+import { ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function ResultPage() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
   const userImage = localStorage.getItem('userImage');
   const outfitImage = '/outfit-overlay.png';
   const productLink = localStorage.getItem('productLink');
@@ -20,13 +25,32 @@ export default function ResultPage() {
     {
       title: 'Occasion Tip',
       icon: '✨',
-      text: 'Perfect for brunches, casual Fridays, or even a gallery visit.',
+      text:
+        'Perfect for evening coffee dates ☕, smart casual office scenes 🧑‍💻, laid-back dinner outings 🍽️, and Instagram-worthy indoor shoots 📸.',
     },
   ];
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 text-center">
+        <p className="text-xl text-indigo-700 font-semibold mb-4 animate-pulse">
+          🪄 Generating your stylish result...
+        </p>
+        <div className="w-16 h-16 border-4 border-pink-300 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-tr from-pink-100 via-blue-50 to-emerald-100 p-8 relative">
-      
       {/* Back to Home Button */}
       <button
         onClick={() => navigate('/')}
@@ -52,7 +76,7 @@ export default function ResultPage() {
               />
             )}
             <img
-              src="https://w0.peakpx.com/wallpaper/240/149/HD-wallpaper-virat-kohli-test-cricket-virat-kohli-test-cricket.jpg"
+              src={MyImage}
               alt="Outfit"
               className="absolute top-0 left-0 w-full h-screen object-cover opacity-90"
             />
@@ -71,7 +95,7 @@ export default function ResultPage() {
             </div>
           )}
 
-          <ColorCompatibilityChecker productColor="Terracotta" userTone="Cool" />
+          <ColorCompatibilityChecker productColor="Black" userTone="Neutral" />
         </div>
 
         {/* Suggestions Section */}
@@ -91,9 +115,19 @@ export default function ResultPage() {
           <SuggestionCard
             icon="✨"
             title="Occasion Tip"
-            text="Perfect for brunches, casual Fridays, or even a gallery visit."
+            text="Perfect for evening coffee dates ☕, smart casual office scenes 🧑‍💻, laid-back dinner outings 🍽️, and Instagram-worthy indoor shoots 📸."
           />
         </div>
+      </div>
+
+      {/* About us Button */}
+      <div className="text-center mt-10">
+        <Link
+          to="/about"
+          className="inline-block px-6 py-3 bg-pink-500 text-white rounded-full shadow-md hover:bg-pink-600 transition duration-300 font-semibold"
+        >
+          👩‍🎨 About us
+        </Link>
       </div>
 
       <Footer />
